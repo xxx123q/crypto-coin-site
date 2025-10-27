@@ -61,7 +61,7 @@ export default function Homepage() {
     loadCoinData();
   }, [page]);
 
-  //deal with search function
+  // Search with debounce
   useEffect(() => {
     if (!searchItem.trim()) {
       setSearchResults([]);
@@ -69,7 +69,7 @@ export default function Homepage() {
       return;
     }
 
-    async function fetchSearchResults() {
+    const delay = setTimeout(async () => {
       setError(null);
       try {
         const res = await fetch(
@@ -83,8 +83,8 @@ export default function Homepage() {
         setSearchResults([]);
         setError(err.message);
       }
-    }
-    fetchSearchResults();
+    }, 400);
+    return () => clearTimeout(delay);
   }, [searchItem]);
 
   if (loading) return <p>Loading...</p>;

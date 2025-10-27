@@ -4,17 +4,22 @@ import Link from "next/link";
 
 export default function Homepage() {
   const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
+      setLoading(true);
       const res = await fetch(
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1"
       );
       const data = await res.json();
       setCoins(data);
+      setLoading(false);
     }
     loadData();
   }, []);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div>

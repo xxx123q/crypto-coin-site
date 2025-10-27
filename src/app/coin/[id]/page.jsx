@@ -5,6 +5,7 @@ import Link from "next/link";
 export default function CoinDetail({ params }) {
   const { id } = use(params);
   const [coin, setCoin] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCoinData() {
@@ -13,11 +14,12 @@ export default function CoinDetail({ params }) {
       );
       const data = await res.json();
       setCoin(data);
+      setLoading(false);
     }
     fetchCoinData();
   }, [id]);
 
-  if (!coin) return null;
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div>

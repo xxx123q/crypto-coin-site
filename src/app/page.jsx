@@ -9,8 +9,12 @@ export default function Homepage() {
   useEffect(() => {
     async function loadData() {
       setLoading(true);
+      const currency = "usd";
+      const order = "market_cap_desc";
+      const pageNumber = 1;
+      const perPage = 50;
       const res = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1"
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${order}&per_page=${perPage}&page=${pageNumber}`
       );
       const data = await res.json();
       setCoins(data);

@@ -285,9 +285,27 @@ export default function Homepage() {
                       {coin.name} ({coin.symbol.toUpperCase()})
                     </Box>
                   </TableCell>
-                  <TableCell>${coin.current_price}</TableCell>
-                  <TableCell>${coin.total_volume}</TableCell>
-                  <TableCell>${coin.market_cap}</TableCell>
+                  <TableCell>
+                    {coin.current_price != null
+                      ? `$${coin.current_price.toLocaleString(undefined, {
+                          maximumFractionDigits: 8,
+                        })}`
+                      : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {coin.total_volume != null
+                      ? `$${coin.total_volume.toLocaleString(undefined, {
+                          maximumFractionDigits: 8,
+                        })}`
+                      : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {coin.market_cap != null
+                      ? `$${coin.market_cap.toLocaleString(undefined, {
+                          maximumFractionDigits: 8,
+                        })}`
+                      : "N/A"}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -123,19 +123,26 @@ export default function CoinDetail({ params }) {
           <Typography variant="h6">
             <strong>Current Price:</strong>{" "}
             {coin.market_data?.current_price?.aud
-              ? `$${coin.market_data.current_price.aud} AUD`
+              ? `$${coin.market_data.current_price.aud.toLocaleString(
+                  undefined,
+                  { maximumFractionDigits: 8 }
+                )} AUD`
               : "N/A"}
           </Typography>
           <Typography variant="body1" color="text.secondary">
             <strong>24h High:</strong>{" "}
             {coin.market_data?.high_24h?.aud
-              ? `$${coin.market_data.high_24h.aud} AUD`
+              ? `$${coin.market_data.high_24h.aud.toLocaleString(undefined, {
+                  maximumFractionDigits: 8,
+                })} AUD`
               : "N/A"}
           </Typography>
           <Typography variant="body1" color="text.secondary" gutterBottom>
             <strong>24h Low:</strong>{" "}
             {coin.market_data?.low_24h?.aud
-              ? `$${coin.market_data.low_24h.aud} AUD`
+              ? `$${coin.market_data.low_24h.aud.toLocaleString(undefined, {
+                  maximumFractionDigits: 8,
+                })} AUD`
               : "N/A"}
           </Typography>
 

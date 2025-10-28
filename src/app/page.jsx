@@ -28,7 +28,6 @@ export default function Homepage() {
   const [sort, setSort] = useState({ key: "market_cap", direction: "desc" });
   const [searchItem, setSearchItem] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedCoin, setSelectedCoin] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -111,12 +110,10 @@ export default function Homepage() {
   };
 
   const handleSearch = () => {
-    const coin = selectedCoin || searchResults[0];
-    if (coin) {
+    if (searchResults.length > 0) {
+      const coin = searchResults[0];
       router.push(`/coin/${coin.id}`);
       setShowDropdown(false);
-      setSearchItem("");
-      setSelectedCoin(null);
     }
   };
 
@@ -149,7 +146,6 @@ export default function Homepage() {
             value={searchItem}
             onChange={(e) => {
               setSearchItem(e.target.value);
-              setSelectedCoin(null);
             }}
             onFocus={() => setShowDropdown(true)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -179,9 +175,8 @@ export default function Homepage() {
                   <Box key={coin.id}>
                     <MenuItem
                       onClick={() => {
-                        setSelectedCoin(coin);
-                        setSearchItem(coin.name);
                         setShowDropdown(false);
+                        router.push(`/coin/${coin.id}`);
                       }}
                       sx={{
                         display: "flex",
@@ -236,7 +231,7 @@ export default function Homepage() {
           color="primary"
           sx={{ ml: 2, height: "56px" }}
           onClick={handleSearch}
-          disabled={searchResults.length === 0 && !selectedCoin}
+          disabled={searchResults.length === 0}
         >
           Search
         </Button>

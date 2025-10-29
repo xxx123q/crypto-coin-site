@@ -17,6 +17,7 @@ export default function CoinDetail({ params }) {
   const [coin, setCoin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saveId, setSaveId] = useState(null);
 
   useEffect(() => {
     async function fetchCoinData() {
@@ -35,14 +36,17 @@ export default function CoinDetail({ params }) {
           throw new Error("Coin data is incomplete");
         }
         setCoin(data);
+        setSaveId(id);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
-    fetchCoinData();
-  }, [id]);
+    if (saveId !== id) {
+      fetchCoinData();
+    }
+  }, [saveId, id]);
 
   if (loading) {
     return (
@@ -123,16 +127,21 @@ export default function CoinDetail({ params }) {
           <Typography variant="h6">
             <strong>Current Price:</strong>{" "}
             {coin.market_data?.current_price?.aud
-              ? `$${coin.market_data.current_price.aud.toLocaleString(
-                  undefined,
-                  { maximumFractionDigits: 8 }
-                )} AUD`
+              ? `${coin.market_data.current_price.aud.toLocaleString("en-AU", {
+                  style: "currency",
+                  currency: "AUD",
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 8,
+                })} AUD`
               : "N/A"}
           </Typography>
           <Typography variant="body1" color="text.secondary">
             <strong>24h High:</strong>{" "}
             {coin.market_data?.high_24h?.aud
-              ? `$${coin.market_data.high_24h.aud.toLocaleString(undefined, {
+              ? `${coin.market_data.high_24h.aud.toLocaleString("en-AU", {
+                  style: "currency",
+                  currency: "AUD",
+                  minimumFractionDigits: 0,
                   maximumFractionDigits: 8,
                 })} AUD`
               : "N/A"}
@@ -140,7 +149,10 @@ export default function CoinDetail({ params }) {
           <Typography variant="body1" color="text.secondary" gutterBottom>
             <strong>24h Low:</strong>{" "}
             {coin.market_data?.low_24h?.aud
-              ? `$${coin.market_data.low_24h.aud.toLocaleString(undefined, {
+              ? `${coin.market_data.low_24h.aud.toLocaleString("en-AU", {
+                  style: "currency",
+                  currency: "AUD",
+                  minimumFractionDigits: 0,
                   maximumFractionDigits: 8,
                 })} AUD`
               : "N/A"}

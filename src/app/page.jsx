@@ -33,6 +33,7 @@ export default function Homepage() {
   const router = useRouter();
   const perPage = 50;
   const inputRef = useRef(null);
+  const [lastValidPage, setLastValidPage] = useState(0);
 
   // Fetch total number of coins
   useEffect(() => {
@@ -54,7 +55,6 @@ export default function Homepage() {
   useEffect(() => {
     async function loadCoinData() {
       setLoading(true);
-      setError(null);
       try {
         const res = await fetch(
           `https://api.coingecko.com/api/v3/coins/markets?vs_currency=aud&order=market_cap_desc&per_page=${perPage}&page=${page}`
@@ -62,14 +62,18 @@ export default function Homepage() {
         if (!res.ok) throw new Error("Failed to load coin data.");
         const data = await res.json();
         setCoins(data);
+        setLastValidPage(page);
       } catch (err) {
         setError(err.message);
+        setPage(lastValidPage);
       } finally {
         setLoading(false);
       }
     }
-    loadCoinData();
-  }, [page]);
+    if (page !== lastValidPage) {
+      loadCoinData();
+    }
+  }, [lastValidPage, page]);
 
   // Search with debounce
   useEffect(() => {
@@ -313,7 +317,10 @@ export default function Homepage() {
         <Pagination
           count={totalPages}
           page={page}
-          onChange={(_, value) => setPage(value)}
+          onChange={(_, value) => {
+            setError(null);
+            setPage(value);
+          }}
           color="primary"
           variant="outlined"
           shape="rounded"

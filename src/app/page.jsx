@@ -1,14 +1,9 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
-import {
-  Container,
-  Typography,
-  CircularProgress,
-  Pagination,
-  Box,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Container, Typography, CircularProgress, Box } from "@mui/material";
 import SearchBar from "./components/SearchBar";
 import CoinTable from "./components/CoinTable";
+import PaginationBar from "./components/Pagination";
 
 export default function Homepage() {
   const [coins, setCoins] = useState([]);
@@ -129,8 +124,6 @@ export default function Homepage() {
         setShowDropdown={setShowDropdown}
         handleSearch={handleSearch}
       />
-
-      {/* List */}
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
           <CircularProgress />
@@ -139,20 +132,12 @@ export default function Homepage() {
         <CoinTable coins={coins} handleSort={handleSort} />
       )}
 
-      {/* Page Button */}
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(_, value) => {
-            setError(null);
-            setPage(value);
-          }}
-          color="primary"
-          variant="outlined"
-          shape="rounded"
-        />
-      </Box>
+      <PaginationBar
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+        setError={setError}
+      />
     </Container>
   );
 }
